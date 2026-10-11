@@ -31,6 +31,22 @@ FLAC ve float WAV karşılaştırma kopyası, nihai dosya tekrar tempo işlemind
 
 ## Başlatma
 
+### Windows: tek tıkla kur ve çalıştır
+
+1. GitHub'da **Code → Download ZIP** ile projeyi indirin veya klonlayın.
+2. ZIP'i tamamen bir klasöre çıkarın. ZIP içinden çalıştırmayın.
+3. **`start.bat` dosyasına çift tıklayın.** İlk çalıştırmada eksik araçlar ve Python paketleri otomatik kurulur; hazır olduğunda tarayıcı açılır.
+
+Windows 10/11 64 bit gerekir. İlk kurulum internet bağlantısı gerektirir ve birkaç dakika sürebilir. Uyumlu Python 3.10–3.13 ve FFmpeg varsa kullanılır. Yoksa resmi, imzası doğrulanan Python 3.13.12 yükleyicisi uygulamanın `tools/python` klasörüne kullanıcı düzeyinde kurulum yapar; FFmpeg Gyan Windows paketinden indirilip SHA256 ile doğrulanır. Rubber Band 4.0.0 da resmi paketten SHA256 doğrulamasıyla kurulur. Global Python paketleri değiştirilmez; uygulama paketleri `.venv` içine kurulur. Sistem PATH'i kalıcı olarak değiştirilmez.
+
+Sonraki açılışlar kurulumu tekrar indirmez. Paket listesi değiştiğinde güncellenir; bozuk uygulama ortamı yeniden oluşturulur. Kurulumda hata olursa pencere açık kalır ve nedenini gösterir; tamamlanan aşamalar sonraki denemede tekrar kullanılabilir. Windows'un güvenlik bildirimi veya kurumsal cihaz kısıtlaması ayrıca kullanıcı işlemi gerektirebilir.
+
+Sunucu arka planda çalışır; açılış penceresini kapatabilirsiniz. **`stop.bat`** yalnızca bu başlatıcının açtığı Tempo Studio sunucusunu durdurur. Zaten açıksa ikinci sunucu başlatılmaz. 8765 doluysa 8785'e kadar uygun bir yerel port seçilir ve tarayıcı doğru adrese açılır. Sunucu yalnızca bilgisayarın kendi bağlantısından (`127.0.0.1`) erişilebilir.
+
+Günlükler `.runtime/server.log` ve `.runtime/server-error.log` içinde bulunur. `.venv`, `.runtime` ve indirilen araçlar Git'e dahil değildir. Uygulama klasörünü taşıdıysanız başlatıcı çalışmayan ortamı yedekleyip yeniden kurar.
+
+### Elle kurulum / diğer sistemler
+
 Python 3.10+, FFmpeg ve Rubber Band 3+ komut satırı aracı gerekir. Windows için `setup-rubberband.ps1` resmi Rubber Band 4.0.0 paketini indirir, SHA256 doğrulaması yapar ve lisansı ile `tools/rubberband/` içine kurar. İndirilen üçüncü taraf dosyalar ve yerel test ekran görüntüleri Git deposuna dahil değildir. Diğer sistemlerde `rubberband` komutunu PATH'e kurun. R3 motoru yoksa uygulama düşük kaliteli bir motora sessizce geçmez.
 
 ```powershell
@@ -39,7 +55,7 @@ powershell -ExecutionPolicy Bypass -File .\setup-rubberband.ps1
 python -m uvicorn app:app --host 127.0.0.1 --port 8765
 ```
 
-http://127.0.0.1:8765 adresini açın. Windows'ta `start.bat` aynı sunucuyu başlatır. Flask alternatifi: `python flask_app.py`. İki sunucuyu aynı portta birlikte başlatmayın.
+http://127.0.0.1:8765 adresini açın. Flask alternatifi: `python flask_app.py`. İki sunucuyu aynı portta birlikte başlatmayın. Otomatik başlatıcı FastAPI kullanır.
 
 Dosyalar bilgisayarda işlenir, geçici dosyalar işlem sonunda silinir. 150 MB sınırı ve her işleme adımında 20 dakika zaman aşımı vardır. Bu yerel kullanım sürümüdür.
 
@@ -51,6 +67,8 @@ Kaynak: https://breakfastquay.com/rubberband/ ve https://breakfastquay.com/news/
 Üçüncü taraf lisansı: `tools/rubberband/rubberband-4.0.0-gpl-executable-windows/COPYING.txt`.
 
 Doğrulama: `python -m unittest discover -s tests -v` (testler NumPy gerektirir).
+
+Geliştirme testleri için `python -m pip install -r requirements-dev.txt` kullanın. Windows başlatıcısını tarayıcı açmadan çalıştırmak için `powershell -NoProfile -ExecutionPolicy Bypass -File .\launch.ps1 -NoBrowser`, sadece kurulum kontrolü için `-SetupOnly` ekleyin. `-ForcePortable` ilk kurulumda mevcut sistem Python/FFmpeg'ini kullanmadan yerel araçları kurmayı sağlar.
 
 Karşılaştırma zaman eşleme testleri: `node tests/test_timeline.cjs`.
 

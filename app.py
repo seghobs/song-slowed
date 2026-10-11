@@ -15,6 +15,11 @@ def index():
     return FileResponse(Path(__file__).parent / 'static' / 'index.html')
 
 
+@app.get('/api/health')
+def health():
+    return {'app': 'tempo-studio', 'workspace': str(Path(__file__).resolve().parent)}
+
+
 @app.post('/api/process')
 def process(file: UploadFile = File(...), speed: str = Form('1'), output_format: str = Form('wav'), profile: str = Form('auto')):
     metadata = {}

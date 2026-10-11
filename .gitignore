@@ -1,5 +1,8 @@
 __pycache__/
 .venv/
+.runtime/
+tools/python/
+tools/ffmpeg/
 *.log
 tools/rubberband.zip
 tools/rubberband/
