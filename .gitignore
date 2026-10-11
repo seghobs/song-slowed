@@ -1,0 +1,7 @@
+__pycache__/
+.venv/
+*.log
+tools/rubberband.zip
+tools/rubberband/
+tests/*.jpg
+tests/qa-*.wav
